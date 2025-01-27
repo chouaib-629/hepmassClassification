@@ -7,8 +7,8 @@ def preprocess_and_save():
     sc = spark.sparkContext
     
     # Load data
-    parsed_train = sc.pickleFile("hdfs://0.0.0.0:9000/hepmass/parsed_train")
-    parsed_test = sc.pickleFile("hdfs://0.0.0.0:9000/hepmass/parsed_test")
+    parsed_train = sc.pickleFile("hdfs://localhost:9000/hepmass/parsed_train")
+    parsed_test = sc.pickleFile("hdfs://localhost:9000/hepmass/parsed_test")
     
     # Feature scaling
     feature_vectors = parsed_train.map(lambda x: x[1])
@@ -23,8 +23,8 @@ def preprocess_and_save():
     scaled_test = parsed_test.map(lambda x: (x[0], (x[1] - means.value) / (stds.value + 1e-8)))
     
     # Save scaled data
-    scaled_train.saveAsPickleFile("hdfs://0.0.0.0:9000/hepmass/scaled_train")
-    scaled_test.saveAsPickleFile("hdfs://0.0.0.0:9000/hepmass/scaled_test")
+    scaled_train.saveAsPickleFile("hdfs://localhost:9000/hepmass/scaled_train")
+    scaled_test.saveAsPickleFile("hdfs://localhost:9000/hepmass/scaled_test")
     
     print("Preprocessing completed!")
 

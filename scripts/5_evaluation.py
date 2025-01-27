@@ -10,12 +10,12 @@ def evaluate_models():
     sc = spark.sparkContext
     
     # Load data
-    scaled_test = sc.pickleFile("hdfs://0.0.0.0:9000/hepmass/scaled_test")
+    scaled_test = sc.pickleFile("hdfs://localhost:9000/hepmass/scaled_test")
     test_data = scaled_test.map(lambda x: LabeledPoint(x[0], x[1]))
     
     # Load models
-    lr_model = LogisticRegressionModel.load(sc, "hdfs://0.0.0.0:9000/hepmass/models/lr_model")
-    dt_model = DecisionTreeModel.load(sc, "hdfs://0.0.0.0:9000/hepmass/models/dt_model")
+    lr_model = LogisticRegressionModel.load(sc, "hdfs://localhost:9000/hepmass/models/lr_model")
+    dt_model = DecisionTreeModel.load(sc, "hdfs://localhost:9000/hepmass/models/dt_model")
     
     def evaluate(model, data):
         # Cast to float explicitly

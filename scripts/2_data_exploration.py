@@ -11,7 +11,7 @@ def explore_and_save():
     spark = create_spark_session("HEPMASS_Data_Exploration")
     sc = spark.sparkContext
     
-    parsed_train = sc.pickleFile("hdfs://0.0.0.0:9000/hepmass/parsed_train")
+    parsed_train = sc.pickleFile("hdfs://localhost:9000/hepmass/parsed_train")
     
     # Class distribution
     class_counts = parsed_train.map(lambda x: (x[0], 1)).reduceByKey(lambda a,b: a+b).collect()

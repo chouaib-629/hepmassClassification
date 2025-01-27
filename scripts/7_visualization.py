@@ -33,10 +33,10 @@ def visualize_and_save():
     sc = spark.sparkContext
     
     # Load model (MLlib format)
-    best_model = DecisionTreeModel.load(sc, "hdfs://0.0.0.0:9000/hepmass/models/dt_model")
+    best_model = DecisionTreeModel.load(sc, "hdfs://localhost:9000/hepmass/models/dt_model")
     
     # Load test data (RDD)
-    scaled_test = sc.pickleFile("hdfs://0.0.0.0:9000/hepmass/scaled_test")
+    scaled_test = sc.pickleFile("hdfs://localhost:9000/hepmass/scaled_test")
     test_data = scaled_test.map(lambda x: LabeledPoint(x[0], x[1]))  # Now works
     
     # Generate predictions

@@ -13,7 +13,7 @@ def tune_and_save():
     sc = spark.sparkContext
     
     # Load training data
-    scaled_train = sc.pickleFile("hdfs://0.0.0.0:9000/hepmass/scaled_train")
+    scaled_train = sc.pickleFile("hdfs://localhost:9000/hepmass/scaled_train")
     train_data = scaled_train.map(lambda x: LabeledPoint(x[0], x[1]))
     
     # Hyperparameter grid
