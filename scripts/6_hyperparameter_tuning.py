@@ -6,14 +6,14 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from pyspark.mllib.evaluation import MulticlassMetrics
-from spark_setup import create_spark_session
+from sparkConfig import create_spark_session
 
 def tune_and_save():
     spark = create_spark_session("HEPMASS_Hyperparameter_Tuning")
     sc = spark.sparkContext
     
     # Load training data
-    scaled_train = sc.pickleFile("hdfs://localhost:9000/hepmass/scaled_train")
+    scaled_train = sc.pickleFile("hdfs://0.0.0.0:9000/hepmass/scaled_train")
     train_data = scaled_train.map(lambda x: LabeledPoint(x[0], x[1]))
     
     # Hyperparameter grid
@@ -38,7 +38,7 @@ def tune_and_save():
     plt.xlabel('Tree Depth')
     plt.ylabel('F1 Score')
     plt.title('Decision Tree Hyperparameter Tuning')
-    plt.savefig('tuning_results.png')
+    plt.savefig('plots/tuning_results.png')
     
     best_depth = max(results, key=lambda x: x[1])[0]
     print(f"Best depth: {best_depth}")

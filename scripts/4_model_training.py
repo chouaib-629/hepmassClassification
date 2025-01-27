@@ -2,14 +2,14 @@ from pyspark import SparkContext
 from pyspark.mllib.classification import LogisticRegressionWithSGD
 from pyspark.mllib.tree import DecisionTree
 from pyspark.mllib.regression import LabeledPoint
-from spark_setup import create_spark_session
+from sparkConfig import create_spark_session
 
 def train_and_save():
     spark = create_spark_session("HEPMASS_Model_Training")
     sc = spark.sparkContext
     
     # Load scaled data
-    scaled_train = sc.pickleFile("hdfs://localhost:9000/hepmass/scaled_train")
+    scaled_train = sc.pickleFile("hdfs://0.0.0.0:9000/hepmass/scaled_train")
     train_data = scaled_train.map(lambda x: LabeledPoint(x[0], x[1]))
     
     # Train models
@@ -28,8 +28,8 @@ def train_and_save():
     )
     
     # Save models
-    lr_model.save(sc, "hdfs://localhost:9000/hepmass/models/lr_model")
-    dt_model.save(sc, "hdfs://localhost:9000/hepmass/models/dt_model")
+    lr_model.save(sc, "hdfs://0.0.0.0:9000/hepmass/models/lr_model")
+    dt_model.save(sc, "hdfs://0.0.0.0:9000/hepmass/models/dt_model")
     
     print("Models trained and saved!")
 

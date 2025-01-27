@@ -1,6 +1,6 @@
 from pyspark import SparkContext
 import numpy as np
-from spark_setup import create_spark_session
+from sparkConfig import create_spark_session
 
 def load_and_save():
     spark = create_spark_session("HEPMASS_Data_Loading")
@@ -14,15 +14,15 @@ def load_and_save():
             return None
             
     # Load and parse data
-    train_rdd = sc.textFile("hdfs://localhost:9000/hepmass/1000_train.csv.gz")
-    test_rdd = sc.textFile("hdfs://localhost:9000/hepmass/1000_test.csv.gz")
+    train_rdd = sc.textFile("hdfs://0.0.0.0:9000/hepmass/all_train.csv.gz")
+    test_rdd = sc.textFile("hdfs://0.0.0.0:9000/hepmass/all_test.csv.gz")
     
     parsed_train = train_rdd.map(parse_line).filter(lambda x: x is not None)
     parsed_test = test_rdd.map(parse_line).filter(lambda x: x is not None)
     
     # Save parsed data
-    parsed_train.saveAsPickleFile("hdfs://localhost:9000/hepmass/parsed_train")
-    parsed_test.saveAsPickleFile("hdfs://localhost:9000/hepmass/parsed_test")
+    parsed_train.saveAsPickleFile("hdfs://0.0.0.0:9000/hepmass/parsed_train")
+    parsed_test.saveAsPickleFile("hdfs://0.0.0.0:9000/hepmass/parsed_test")
     
     print(f"Train samples: {parsed_train.count()}, Test samples: {parsed_test.count()}")
 

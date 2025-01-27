@@ -6,7 +6,7 @@ import seaborn as sns
 import pandas as pd
 from pyspark.mllib.tree import DecisionTreeModel
 from pyspark.mllib.regression import LabeledPoint  # Fix: Import LabeledPoint
-from spark_setup import create_spark_session
+from sparkConfig import create_spark_session
 
 def compute_feature_importance(tree_model, num_features):
     """Calculate feature importance based on split frequency in the tree."""
@@ -33,10 +33,10 @@ def visualize_and_save():
     sc = spark.sparkContext
     
     # Load model (MLlib format)
-    best_model = DecisionTreeModel.load(sc, "hdfs://localhost:9000/hepmass/models/dt_model")
+    best_model = DecisionTreeModel.load(sc, "hdfs://0.0.0.0:9000/hepmass/models/dt_model")
     
     # Load test data (RDD)
-    scaled_test = sc.pickleFile("hdfs://localhost:9000/hepmass/scaled_test")
+    scaled_test = sc.pickleFile("hdfs://0.0.0.0:9000/hepmass/scaled_test")
     test_data = scaled_test.map(lambda x: LabeledPoint(x[0], x[1]))  # Now works
     
     # Generate predictions
@@ -49,7 +49,7 @@ def visualize_and_save():
     plt.figure(figsize=(6, 4))
     sns.heatmap(cm, annot=True, fmt='d')
     plt.title('Confusion Matrix')
-    plt.savefig('final_confusion_matrix.png')
+    plt.savefig('plots/final_confusion_matrix.png')
     plt.close()
     
     # Compute feature importance manually
@@ -62,7 +62,7 @@ def visualize_and_save():
     plt.title('Feature Importance (Split Frequency)')
     plt.xlabel('Feature Index')
     plt.ylabel('Importance')
-    plt.savefig('feature_importance.png')
+    plt.savefig('plots/feature_importance.png')
     plt.close()
 
 if __name__ == "__main__":

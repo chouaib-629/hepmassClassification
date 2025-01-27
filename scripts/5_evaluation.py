@@ -3,19 +3,19 @@ from pyspark.mllib.evaluation import MulticlassMetrics
 from pyspark.mllib.classification import LogisticRegressionModel
 from pyspark.mllib.tree import DecisionTreeModel
 from pyspark.mllib.regression import LabeledPoint
-from spark_setup import create_spark_session
+from sparkConfig import create_spark_session
 
 def evaluate_models():
     spark = create_spark_session("HEPMASS_Evaluation")
     sc = spark.sparkContext
     
     # Load data
-    scaled_test = sc.pickleFile("hdfs://localhost:9000/hepmass/scaled_test")
+    scaled_test = sc.pickleFile("hdfs://0.0.0.0:9000/hepmass/scaled_test")
     test_data = scaled_test.map(lambda x: LabeledPoint(x[0], x[1]))
     
     # Load models
-    lr_model = LogisticRegressionModel.load(sc, "hdfs://localhost:9000/hepmass/models/lr_model")
-    dt_model = DecisionTreeModel.load(sc, "hdfs://localhost:9000/hepmass/models/dt_model")
+    lr_model = LogisticRegressionModel.load(sc, "hdfs://0.0.0.0:9000/hepmass/models/lr_model")
+    dt_model = DecisionTreeModel.load(sc, "hdfs://0.0.0.0:9000/hepmass/models/dt_model")
     
     def evaluate(model, data):
         # Cast to float explicitly
