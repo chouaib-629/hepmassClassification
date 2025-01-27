@@ -77,6 +77,11 @@ The [HEPMASS dataset](https://archive.ics.uci.edu/dataset/347/hepmass) contains 
     ./setup_env.sh
     ```
 
+    **Optional Flags:**
+
+    - `--help`: Display usage instructions and available command-line options.
+    - `--version`: Display the version information of the script..
+
 4. **Download and Prepare the Dataset:**
 
     - **Download the dataset:**
@@ -125,9 +130,17 @@ The [HEPMASS dataset](https://archive.ics.uci.edu/dataset/347/hepmass) contains 
 
     **Optional Flags:**
 
+    - `--help`: Display usage instructions and available command-line options.
+    - `--version`: Display the version information of the script.
     - `--enable-logs`: Enable detailled Spark logs.
     - `--no-services`: Skip starting/stopping HDFS/Spark (manual management).
     - `--disable-safe-mode`: Force-disable HDFS safemode.
+
+    **Example with Flags:**
+
+    ```bash
+    ./run_pipeline.sh --enable-logs --disable-safe-mode
+    ```
 
 3. **Deactivate Environment** (when finished):
 
@@ -135,11 +148,16 @@ The [HEPMASS dataset](https://archive.ics.uci.edu/dataset/347/hepmass) contains 
     deactivate
     ```
 
-**Example with Flags:**
+    **Optional:** Save the Models Locally
 
-```bash
-./run_pipeline.sh --enable-logs --disable-safe-mode
-```
+    Copy the models from HDFS to your local storage for further use:
+
+    ```bash
+    mkdir models
+    start-dfs.sh
+    hdfs dfs -get /hepmass/models/* /models
+    stop-dfs.sh
+    ```
 
 ### Expected Output
 
